@@ -48,7 +48,7 @@ gem 'refinerycms-videojs'
 ```
 Get the latest version with:
 ```ruby
-gem 'refinerycms-videojs', git: 'https://github.com/anitagraham/refinerycms-videojs'
+gem 'refinerycms-videojs', git: 'https://github.com/aaronh/refinerycms-videojs'
 ```
 
 Now, run: 
