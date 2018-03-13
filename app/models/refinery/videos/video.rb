@@ -21,7 +21,8 @@ module Refinery
       serialize :config, Hash
       CONFIG_OPTIONS = {
         autoplay: 'false', width: '400', height: '300',
-        controls: 'true', preload: 'true', loop: 'true'
+        controls: 'true', preload: 'true', loop: 'false',
+        playsinline: 'true', muted: 'false'
       }
 
       # Create getters and setters
@@ -51,15 +52,19 @@ module Refinery
           id: "video_#{id}",
           class: "video-js #{Refinery::Videos.skin_css_class}",
           poster: '' || poster.url
-        }.merge(config.select{|k, v| v != "false"}.transform_values{|val| val=="true" ? true : val})
+        }.merge(sizeless_config.select{|k, v| v != "false"}.transform_values{|val| val=="true" ? true : val})
 
         content_tag(:video, sources_html, options, false)
+      end
+
+      def sizeless_config
+        config.reject{|k,v| [:width, :height].include?(k)}
       end
 
       def sources_html
         video_files.each.inject(ActiveSupport::SafeBuffer.new) do |buffer, file|
           options = {
-            src: file.use_external ? file.external_url : file.url,
+            src: file.use_external ? file.external_url : file.direct_url,
             type: file.mime_type || file.file_mime_type
 
           }

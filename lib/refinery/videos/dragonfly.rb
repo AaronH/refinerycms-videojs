@@ -44,7 +44,8 @@ module Refinery
             options = {
               bucket_name: Refinery::Videos.s3_bucket_name,
               access_key_id: Refinery::Videos.s3_access_key_id,
-              secret_access_key: Refinery::Videos.s3_secret_access_key
+              secret_access_key: Refinery::Videos.s3_secret_access_key,
+              root_path: Refinery::Videos.s3_root_path,
             }
             # S3 Region otherwise defaults to 'us-east-1'
             options.update(region: Refinery::Videos.s3_region) if Refinery::Videos.s3_region

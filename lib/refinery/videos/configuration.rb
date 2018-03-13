@@ -44,6 +44,10 @@ module Refinery
         config.s3_secret_access_key.presence || Core.s3_secret_access_key
       end
 
+      def s3_root_path
+        config.s3_root_path #|| Core.s3_root_path
+      end
+
       def s3_region
         config.s3_region.presence || Core.s3_region
       end

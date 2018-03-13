@@ -8,7 +8,7 @@ module Refinery
       acts_as_indexed :fields => [:file_name, :file_ext]
       belongs_to :video
 
-      MIME_TYPES = {'.mp4' => 'mp4', '.flv' => 'flv', '.webm' => 'webm', '.ogg' => 'ogg', '.ogv' => 'ogg'}
+      MIME_TYPES = {'.mp4' => 'mp4', '.flv' => 'flv', '.webm' => 'webm', '.ogg' => 'ogg', '.ogv' => 'ogg', '.m4v' => 'mp4'}
 
       ############################ Dragonfly
       dragonfly_accessor :file, app: :refinery_videos
@@ -33,6 +33,29 @@ module Refinery
         use_external ? external_url.present? : file.present?
       end
 
+      def direct_url
+        unless use_external
+          dragonfly_attachments[:file].remote_url
+        else
+          external_url
+        end
+        # Was attempting to do this for local storage. Bad idea
+        # unless use_external
+        #   if file.present?
+        #     dir = %(/system/refinery/videos/#{file_uid.split(/\//)[0,3].join('/')})
+        #     fn = file_name.gsub(/[^A-Z0-9\.]/i, '_').gsub(/\_+/, '_')
+        #     regex = Regexp.new %(#{fn}$).gsub(/\./, '\.')
+        #     file = Dir.entries("#{Rails.root}/public#{dir}").select{|f| f =~ regex }.first
+        #     if file
+        #       Rails.logger.debug "********** HAS FILE #{file}"
+        #       %(#{dir}/#{file})
+        #     else
+        #       url
+        #     end
+        #   end
+        # end
+      end
+
       def short_info
         if use_external
            ['.link', external_url]
@@ -47,8 +70,10 @@ module Refinery
         if use_external
           type = external_url.scan(/\.\w+$/)
           if type.present? && MIME_TYPES.has_key?(type.first)
+            Rails.logger.debug "*************** HAS KEY :: #{type}"
             self.file_mime_type = "video/#{MIME_TYPES[type.first]}"
           else
+            Rails.logger.debug "*************** NO KEY :: #{type}"
             self.file_mime_type = 'video/mp4'
           end
         end

@@ -2,3 +2,32 @@
 <div class="video_container">
   <%= @video.to_html %>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var vid_width = <%= [@video.width, 1920].reject(&:blank?).first %>;
+    var vid_height = <%= [@video.height, 1080].reject(&:blank?).first %>;
+    var videoAspectRatio = vid_width / vid_height;
+    var h_off = 0;
+    var v_off = 0;
+    var $dialog = $('#dialog_container');
+    if ($dialog.length){
+      var windowWidth = $dialog.width() - 24;
+      var windowHeight = $dialog.height() - 24;
+      if (windowWidth / videoAspectRatio <= windowHeight) {
+        vid_height = windowWidth / videoAspectRatio;
+        vid_width = windowWidth;
+        v_off = (windowHeight - vid_height) / 2;
+      } else {
+        vid_width = windowHeight * videoAspectRatio;
+        vid_height = windowHeight;
+        h_off = (windowWidth - vid_width) / 2;
+      }
+      $('.video_container video').each(function(){
+        $(this).width(vid_width + 'px').height(vid_height + 'px').attr('width', vid_width).attr('height', vid_height).css({'left': (h_off + 'px'), 'top': (v_off + 'px')});
+      });
+
+    }
+
+  });
+</script>

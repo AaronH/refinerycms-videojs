@@ -12,7 +12,7 @@
   </div>
   <% unless action_name =~ /insert/   %>
     <span class='actions'>
-      <%=	action_icon :preview, refinery.videos_admin_video_path(video, dialog: true), t('.view_live_html'), target: '_blank' %>
+      <%=	action_icon :preview, refinery.videos_admin_video_path(video, dialog: true), t('.preview'), target: '_blank' %>
       <%=	action_icon :edit,    refinery.edit_videos_admin_video_path(video), t('.edit') %>
       <%= action_icon :delete,  refinery.videos_admin_video_path(video), t('.delete'), class: 'confirm-delete', id: "delete_#{video.id}",
                                  data: { confirm: t('message', scope: 'refinery.admin.delete', title: video.title)} %>

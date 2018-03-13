@@ -60,7 +60,7 @@ module Refinery
         def permitted_video_params
           [
             :id, :title, :poster_id, :image_alt, :position, :config, :embed_tag, :use_shared,
-            :autoplay, :width , :height, :controls, :preload, :loop,
+            :autoplay, :width , :height, :controls, :preload, :loop, :muted, :playsinline,
             video_files_attributes: [:id, :file, :file_mime_type, :position, :use_external, :external_url, :_destroy]
           ]
 
