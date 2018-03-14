@@ -51,7 +51,7 @@ module Refinery
         options = {
           id: "video_#{id}",
           class: "video-js #{Refinery::Videos.skin_css_class}",
-          poster: '' || poster.url
+          poster: poster.try(:url).to_s
         }.merge(sizeless_config.select{|k, v| v != "false"}.transform_values{|val| val=="true" ? true : val})
 
         content_tag(:video, sources_html, options, false)
